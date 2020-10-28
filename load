@@ -1,0 +1,5 @@
+composer_update(){
+composer update
+
+composer dump-autoload
+}

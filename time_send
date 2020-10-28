@@ -1,0 +1,18 @@
+#! /bin/zsh
+source ~/bash_script/nkcore
+wx_user_id=$1
+content=$2
+
+if [ -f "$2" ];
+then
+   content=$(cat $2)
+fi
+
+nlog $0 "发送一条消息$wx_user_id,$content"
+
+curl --request POST \
+  --url 'http://127.0.0.1:52700/wechat-plugin/send-message?=' \
+  --header 'cache-control: no-cache' \
+  --header 'host: 127.0.0.1:52700' \
+  --data userId="$wx_user_id" \
+  --data content="$content"

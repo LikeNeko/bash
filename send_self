@@ -1,0 +1,4 @@
+#! /bin/bash
+source ~/bash_script/nkcore
+
+send_wx_self $1;

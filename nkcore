@@ -1,0 +1,25 @@
+#! /bin/bash
+source ~/.bashrc
+if [ -n "$__MODULE_SH__" ]; then
+    return
+fi
+__MODULE_SH__='nkcore'
+
+n_wx_appid="wxid_c1llv49os66j22"
+
+# 打印log
+nlog(){
+  logPath="/Users/neko/bash_script/logs/$(date +'%Y-%m-%d').log"
+  echo "[$(date +"%Y-%m-%d %H:%M:%S")][$(basename $1)] $2" >> $logPath
+  echo "[$(date +"%Y-%m-%d %H:%M:%S")][$(basename $1)] $2"
+}
+
+# 发送给自己
+send_wx_self(){
+    curl --request POST \
+        --url 'http://127.0.0.1:52700/wechat-plugin/send-message?=' \
+        --header 'cache-control: no-cache' \
+        --header 'host: 127.0.0.1:52700' \
+        --data userId="$n_wx_appid" \
+        --data content="$1"
+}
