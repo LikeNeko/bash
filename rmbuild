@@ -1,8 +1,11 @@
 #!/bin/zsh
 #rm -rf ~/Library/Developer/Xcode/iOS\ DeviceSupport/
+rm -rf ~/Library/Developer/CoreSimulator/Caches
 rm -rf ~/Library/Developer/Xcode/Products/
 #rm -rf ~/Library/Developer/CoreSimulator/Devices/
 rm -rf ~/Library/Developer/Xcode/DerivedData/* 
 rm -rf ~/Library/Developer/Xcode/Archives/*  
 rm -rf ~/Library/Developer/XCTestDevices/* 
-rm -rf ~/Library/Developer/XCPGDevices/* 
+rm -rf ~/Library/Developer/XCPGDevices/*
+
+ 

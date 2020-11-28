@@ -1,0 +1,85 @@
+#!/usr/bin/env python3
+# encoding: utf-8
+
+import json
+import os
+import signal
+import sys
+import time
+
+from loguru import logger
+import websocket
+
+try:
+    import thread
+except ImportError:
+    import _thread as thread
+
+
+def on_message(ws, message):
+    try:
+        json_data = json.loads(message)
+
+        if json_data.get('pong'):
+            return
+        if json_data.get('type') == 'log':
+            logger.success("日志:" + str(json_data.get('data').get("content")))
+            return
+        if json_data.get('type') == 'binding':
+            logger.success('绑定成功...')
+            logger.success('等待服务器推送日志...')
+            return
+    except SyntaxError:
+        pass
+    print(message)
+
+
+def on_error(ws, error):
+    if error is not None:
+        print(error)
+
+
+def on_close(ws):
+    print("### closed ###")
+
+
+def on_ping(ws):
+    pass
+
+
+def on_open(ws):
+    logger.info('打开连接开启心跳...')
+
+    def heartbeat(*args):
+        while True:
+            time.sleep(2)
+            ws.send('{"action":"ping"}')
+
+    # 开启心跳
+    thread.start_new_thread(heartbeat, ())
+    ws.send(json.dumps({'action': "binding", "app_key": app_key}))
+
+
+def sig_handler(sig, frame):
+    ws.close()
+    print('bye~')
+    exit()
+
+
+if __name__ == '__main__':
+    websocket.enableTrace(False)
+    logger.remove()
+    logger.add(sys.stdout, format="{time:HH:mm:ss} {message}")
+    app_key = sys.argv[1]
+    signal.signal(signal.SIGTERM, sig_handler)
+    signal.signal(signal.SIGINT, sig_handler)
+
+    ws = websocket.WebSocketApp("wss://log.nekopoi.cn:9502",
+                                on_message=on_message,
+                                on_error=on_error,
+                                on_close=on_close,
+                                on_open=on_open,
+                                on_ping=on_ping
+                                )
+
+    ws.run_forever()

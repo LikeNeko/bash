@@ -1,0 +1,2 @@
+#!/usr/local/bin/php
+<?php echo "info:".$_SERVER['argv'][1]."\nurldecode:".rawurldecode($_SERVER['argv'][1]."\n");?>

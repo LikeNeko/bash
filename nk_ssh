@@ -3,13 +3,15 @@
 import sys
 import os
 hostInfoDict={
-    "test":"LiteMob-00-11 ssh root@test.litemob.com",
+    "test":"LiteMob123! ssh root@test.litemob.com",
     "prod":"Lite123Mob! ssh root@apigame.litemob.com",
     "nk_ali":"shibaoNe1. ssh root@nekopoi.cn",
     "prod_a":"LiteMob-00-11 ssh root@api.litemob.com",
 }
-
-print("curr:"+hostInfoDict[sys.argv[1]]);
-os.system("sshpass -p " + hostInfoDict[sys.argv[1]])
+if len(sys.argv)<=1:
+    print(hostInfoDict)
+else:
+    print("curr:"+hostInfoDict[sys.argv[1]]);
+    os.system("sshpass -p " + hostInfoDict[sys.argv[1]])
 
 
